@@ -1,0 +1,105 @@
+REPO LİNKİ:https://github.com/Emindalyan/not-hesaplama
+
+
+📌 Proje kapsamında gerçekleştirilen işlemler:
+
+Kullanıcının vize ve final notlarını girmesi sağlanır.
+Ortalama hesaplanır ve geçme durumu belirlenir.
+Negatif not girişlerine karşı hata kontrolleri eklenir.
+Dosya okuma/yazma işlemleri kullanılarak not bilgileri saklanır.
+Git ve GitHub kullanılarak versiyon kontrolü yapılır.
+
+ÇALIŞMA MANTIĞI
+
+Bu algoritma, kullanıcının girdiği vize ve final notlarını kullanarak ortalama hesaplar ve geçme durumunu belirler.
+
+📌 Adım adım çalışma mantığı:
+Kullanıcıdan vize ve final notlarını al.
+Girilen değerlerin geçerli olup olmadığını kontrol et (örneğin, negatif bir not girilmemeli).
+Ortalama=(Vize×0.4)+(Final×0.6)
+ Ortalama 50 ve üzeriyse "Dersi geçtiniz!", değilse "Dersi geçemediniz!" mesajını göster.
+ Hesaplanan ortalama ve sonucu bir dosyaya yaz.
+✅ Örnek Çalıştırma:
+Girdi: Vize: 60, Final: 70
+Çıktı: "Dersi geçtiniz! Ortalama: 66.0"
+
+ZORLUKLAR VE ÇÖZÜMLER
+
+ 1️⃣ Hatalı Kullanıcı Girdileri
+
+Sorun: Kullanıcı abc gibi harf girerse program hata veriyordu.
+Çözüm: try-except bloğu kullanılarak ValueError hatası yakalandı.
+ 2️⃣ Negatif Not Girme Problemi
+
+Sorun: Kullanıcı -10 gibi negatif değerler girdiğinde program yanlış sonuç veriyordu.
+Çözüm: Negatif not girişlerini engellemek için if kontrolü eklendi.
+ 3️⃣ GitHub’a Push Sorunu
+
+Sorun: error: src refspec main does not match any hatası alındı.
+Çözüm:
+Önce git branch -M main komutu çalıştırıldı.
+Daha sonra git push -u origin main komutu kullanılarak GitHub’a başarıyla yüklendi.
+ 4️⃣ GitHub Commit Geçmişi
+
+Sorun: Rapor için en az 3 commit gerekiyordu.
+Çözüm:
+İlk commit: Temel not hesaplama kodu eklendi.
+İkinci commit: Negatif giriş kontrolleri eklendi.
+Üçüncü commit: Dosya okuma/yazma işlemleri entegre edildi.
+Dördüncü commit: Son rötuşlar ve hata ayıklamalar yapıldı.
+
+
+KODLAR:
+import os
+
+def not_hesapla():
+    input_path = os.path.join(os.getcwd(), "notlar.txt")
+    output_path = os.path.join(os.getcwd(), "sonuc.txt")
+
+    if not os.path.exists(input_path):
+        with open(input_path, "w") as file:
+            file.write("60 75")  # Varsayılan vize ve final notları
+    
+    try:
+        with open(input_path, "r") as file:
+            notlar = file.read().strip().split()
+            vize, final = float(notlar[0]), float(notlar[1])
+
+        ortalama = (vize * 0.4) + (final * 0.6)
+
+        with open(output_path, "w") as file:
+            if ortalama >= 50:
+                file.write(f"Dersi geçtiniz! Ortalama: {ortalama}")
+            else:
+                file.write(f"Dersi geçemediniz! Ortalama: {ortalama}")
+
+        print("Sonuç dosyaya yazıldı:", output_path)
+
+    except ValueError:
+        print("Hata: Dosyada geçerli bir sayı olmalıdır.")
+
+not_hesapla()
+
+
+KOD-2: 
+
+def not_hesapla():
+    try:
+        vize = float(input("Vize notunuzu girin: "))
+        final = float(input("Final notunuzu girin: "))
+
+        if vize < 0 or final < 0:
+            print("Hata: Notlar negatif olamaz!")
+            return
+        
+        ortalama = (vize * 0.4) + (final * 0.6)
+
+        if ortalama >= 50:
+            print("Dersi geçtiniz! Ortalama:", ortalama)
+        else:
+            print("Dersi geçemediniz! Ortalama:", ortalama)
+    
+    except ValueError:
+        print("Hata: Geçerli bir sayı giriniz.")
+
+not_hesapla()
